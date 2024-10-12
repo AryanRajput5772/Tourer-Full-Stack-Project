@@ -1,0 +1,125 @@
+const express = require("express");
+const router = express.Router();
+const wrapAsync = require("../utils/wrapAsync.js");
+const Listing = require("../models/listing.js");
+const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
+
+const multer = require("multer");
+const { storage } = require("../cloudConfig.js");
+const upload = multer({ storage });
+
+const listingController = require("../controllers/listings.js");
+
+/////////////Search Route///////////////////////////////////////////////////////////////////
+
+router.post("/search", wrapAsync(listingController.searchRoutePost));
+
+router.get(
+  "/SearchRoute/:searchValue",
+  wrapAsync(listingController.searchRouteGet)
+);
+
+///////////////filter routes/////////////////////////////////////////////////////////////////
+//1 --> /listings/Boats
+router.get("/Boats", wrapAsync(listingController.Boats1));
+
+router.get("/BoatsFilter", wrapAsync(listingController.Boats));
+
+//2 --> /listings/Domes
+router.get("/Domes", wrapAsync(listingController.Domes1));
+
+router.get("/DomesFilter", wrapAsync(listingController.Domes));
+
+//3 --> /listings/Arctic
+router.get("/Arctic", wrapAsync(listingController.Arctic1));
+
+router.get("/ArcticFilter", wrapAsync(listingController.Arctic));
+
+//4 --> /listings/Farms
+router.get("/Farms", wrapAsync(listingController.Farms1));
+
+router.get("/FarmsFilter", wrapAsync(listingController.Farms));
+
+//5 --> /listings/Camping
+router.get("/Camping", wrapAsync(listingController.Camping1));
+
+router.get("/CampingFilter", wrapAsync(listingController.Camping));
+
+//6 --> /listings/AmazingPools
+router.get("/AmazingPools", wrapAsync(listingController.AmazingPools1));
+
+router.get("/AmazingPoolsFilter", wrapAsync(listingController.AmazingPools));
+
+//7 --> /listings/Beach
+router.get("/Beach", wrapAsync(listingController.Beach1));
+
+router.get("/BeachFilter", wrapAsync(listingController.Beach));
+
+//8 --> /listings/Mountains
+router.get("/Mountains", wrapAsync(listingController.Mountains1));
+
+router.get("/MountainsFilter", wrapAsync(listingController.Mountains));
+
+//9 --> /listings/IconicCities
+router.get("/IconicCities", wrapAsync(listingController.IconicCities1));
+
+router.get("/IconicCitiesFilter", wrapAsync(listingController.IconicCities));
+
+//10 --> /listings/Villas
+router.get("/Villas", wrapAsync(listingController.Villas1));
+
+router.get("/villasFilter", wrapAsync(listingController.Villas));
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+//Index Route/\Create Route
+router
+  .route("/")
+  .get(wrapAsync(listingController.index))
+  .post(
+    isLoggedIn,
+    upload.single("listing[image]"),
+    validateListing,
+    wrapAsync(listingController.createListing)
+  );
+
+//New Route
+router.get("/new", isLoggedIn, listingController.renderNewForm);
+
+//Show Route/\Update Route/\Delete Route
+router
+  .route("/:id")
+  .get(wrapAsync(listingController.showListing))
+  .put(
+    isLoggedIn,
+    isOwner,
+    upload.single("listing[image]"),
+    validateListing,
+    wrapAsync(listingController.updateListing)
+  )
+  .delete(isLoggedIn, isOwner, wrapAsync(listingController.destroyListing));
+
+//Edit Route
+router.get(
+  "/:id/edit",
+  isLoggedIn,
+  isOwner,
+  wrapAsync(listingController.renderEditForm)
+);
+
+module.exports = router;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

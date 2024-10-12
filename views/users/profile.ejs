@@ -1,0 +1,210 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+  .img-container {
+    width: 203px;
+    height: auto;
+    overflow: hidden;
+  }
+
+  .img {
+    overflow: hidden;
+    height: auto;
+    display: block;
+    border-radius: 50%;
+  }
+
+  .img-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .img-container:hover img {
+    opacity: 0.8;
+    background-color: white;
+  }
+
+  .overlay-text {
+    position: absolute;
+    top: 80%;
+    left: 58%;
+    transform: translate(-80%, -70%);
+    font-size: 18px;
+    font-weight: 900;
+    color: rgb(69, 67, 67);
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.4s ease;
+  }
+
+  .img-container:hover .overlay-text {
+    opacity: 1; /* Show text on hover */
+    cursor: pointer;
+  }
+
+  .main {
+    border: 2px solid #993955;
+    border-radius: 20px;
+    margin-left: 180px;
+    height: fit-content;
+  }
+
+  .groupBtn {
+    border: 2px solid #993955;
+  }
+
+  .toggleBtn {
+    color: #993955;
+    background-color: white;
+    border-color: #ced4da; /* Default border color */
+  }
+
+  .btn-check:checked + .toggleBtn {
+    color: white;
+    background-color: #993955; /* Background color when checked */
+    border-color: #993955; /* Border color when checked */
+  }
+
+  .reviewInfo {
+    display: none;
+  }
+</style>
+
+<div class="col-9 offset-2 main mt-3 px-5">
+  <div class="col-5 offset-5 mt-3 mb-4">
+    <a href="/profile/edit">
+      <div class="img-container">
+        <img class="img" src="<%=currUser.photo ||
+        "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="%>"
+        alt="Profile Pic" style="height: 200px; width: 200px; object-fit: cover;
+        border-radius: 50%"/>
+        <div class="overlay-text">Edit</div>
+      </div>
+    </a>
+    <br /><br />
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i><b> <%=currUser.username%> </b></i
+    ><br /><br />
+    <b> &nbsp; &nbsp; &nbsp;Email :- <%=currUser.email%> </b><br />
+  </div>
+  <div
+    class="btn-group w-100 my-3 groupBtn"
+    role="group"
+    aria-label="Basic radio toggle button group">
+    <input
+      type="radio"
+      class="btn-check"
+      name="btnradio"
+      id="btnradio1"
+      checked />
+    <label class="btn btn-outline toggleBtn" for="btnradio1">Listings</label>
+
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" />
+    <label class="btn btn-outline toggleBtn" for="btnradio2">Reviews</label>
+  </div>
+
+  <div class="row listingInfo">
+    <p><b>All Listings</b></p>
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+      <%if(matchingListings.length !== 0 ){%> <%for(let listing of
+      matchingListings ) {%>
+      <a href="/listings/<%=listing._id%>" class="listing-link">
+        <div class="listing-card col card">
+          <img
+            src="<%=listing.image.url%>"
+            class="card-img-top"
+            alt="listing_image"
+            style="height: 200px" />
+          <div class="card-img-overlay"></div>
+          <div class="card-body">
+            <p class="card-text">
+              <b> <%=listing.title%></b><br />
+              <span class="price-info">
+                &#8377; <%=listing.price.toLocaleString("en-IN")%> / night
+              </span>
+              <span class="tax-info">
+                &#8377; <%=((listing.price * 1) + (listing.price *
+                .18)).toLocaleString("en-IN")%> / night -
+                <b><i>After 18% GST</i></b>
+              </span>
+            </p>
+          </div>
+        </div>
+      </a>
+      <%}%> <%}%>
+    </div>
+  </div>
+
+  <div class="row reviewInfo">
+    <p><b>All Reviews</b></p>
+    <div class="row row-cols-xlg-3 mt-3">
+      <%if(matchingReview.length !== 0 ){%><% for(review of matchingReview) { %>
+
+      <div class="card col-5 ms-3 mb-3">
+        <br />
+        <div class="card-body">
+          <img
+            src=" <%=review.author.photo%> "
+            alt="Img"
+            style="
+              height: 33px;
+              width: 33px;
+              object-fit: cover;
+              border-radius: 50%;
+            " />
+          <span class="card-title"
+            >&nbsp; <b><%= review.author.username%></b>
+          </span>
+          <br />
+          <br />
+
+          <p
+            class="starability-result card-text"
+            data-rating="<%= review.rating%>"></p>
+          <p class="card-text"><%= review.comment%></p>
+        </div>
+        <br />
+
+        <form
+          class="mb-2"
+          action="/user/reviews/<%= review._id%>?_method=DELETE"
+          method="POST">
+          <button class="btn btn-sm btn-dark add-btn">Delete</button>
+        </form>
+      </div>
+      <%}%><%}%>
+    </div>
+  </div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<script>
+  let listingSwitch = document.getElementById("btnradio1");
+  let reviewSwitch = document.getElementById("btnradio2");
+  let listingInfo = document.getElementsByClassName("listingInfo");
+
+  listingSwitch.addEventListener("click", () => {
+    for (info of listingInfo) {
+      info.style.display = "block";
+    }
+    for (info of reviewInfo) {
+      if ((info.style.display = "inline")) {
+        info.style.display = "none";
+      }
+    }
+  });
+
+  let reviewInfo = document.getElementsByClassName("reviewInfo");
+  reviewSwitch.addEventListener("click", () => {
+    for (info of reviewInfo) {
+      info.style.display = "inline";
+    }
+    for (info of listingInfo) {
+      if (info.style.display != "none") {
+        info.style.display = "none";
+      }
+    }
+  });
+</script>

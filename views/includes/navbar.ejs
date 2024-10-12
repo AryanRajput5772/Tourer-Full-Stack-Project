@@ -1,0 +1,102 @@
+<style>
+  .search-btn {
+    background-color: #993955;
+    color: white;
+    border-radius: 25px;
+    padding: 0 1rem 0 1rem;
+  }
+
+  .search-btn:hover {
+    background-color: #550527;
+    color: white;
+  }
+
+  .search-btn i {
+    display: inline;
+    margin-right: 0.5rem;
+  }
+
+  .search-inp {
+    border-radius: 25px;
+    padding: 0.5rem 3rem 0.5rem 3rem;
+    font-size: 1rem;
+  }
+
+  .Search-link {
+    text-decoration: none;
+    color: white;
+  }
+
+  .signup {
+    border: 0.5px solid black;
+    border-radius: 10px;
+    padding-top: 4px;
+    padding-bottom: -3px;
+    height: 35px;
+    margin-top: 2px;
+  }
+  .signup:hover {
+    background-color: black;
+    color: #fff !important;
+  }
+
+  .add:hover {
+    font-weight: 500;
+  }
+</style>
+
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+  <div class="container-fluid">
+    <div class="hero">
+      <a class="navbar-brand" href="/listings"
+        ><i class="fa-brands fa-jedi-order logo mb-2"></i
+      ></a>
+      <p class="name"><a href="/listings">Tourer</a></p>
+    </div>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav ms-auto">
+        <form class="d-flex" action="/listings/search" method="POST">
+          <input
+            class="form-control me-2 search-inp"
+            type="text"
+            placeholder="Search destinations"
+            name="search" />
+          <button class="btn search-btn">
+            <i class="fa-solid fa-magnifying-glass"></i>Search
+          </button>
+        </form>
+      </div>
+
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link add" href="/listings/new"
+          >Add&nbsp; your&nbsp; home</a
+        >
+        <%if(!currUser) {%>
+
+        <a class="nav-link" href="/login"> <b>Log in</b></a>
+        <a class="nav-link signup" href="/signup"
+          ><b class="sign">Sign up</b></a
+        >
+
+        <%}%> <%if(currUser) {%>
+
+        <a class="nav-link" href="/logout"><b>Log out</b></a>
+
+        <a class="nav-link" href="/profile"
+          ><img src=" <%= currUser ? currUser.photo :
+          "https://images.unsplash.com/photo-1709884732294-90379fee354c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZnJlZSUyMGltYWdlc3xlbnwwfHwwfHx8MA%3D%3D"%>
+          " alt="Img" style=" height: 33px; width: 33px; object-fit: cover;
+          border-radius: 50%; " /></a
+        >
+        <%}%>
+      </div>
+    </div>
+  </div>
+</nav>

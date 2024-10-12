@@ -1,0 +1,76 @@
+<style>
+  #alertMessage {
+    position: fixed;
+    font-family: pristina;
+    font-size: 25px;
+    width: 400px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    transition: top 0.2s ease-in-out;
+  }
+</style>
+
+<%if(success && success.length ){%>
+
+<div
+  class="alert alert-success col-6 offset-3"
+  id="alertMessage"
+  style="display: block"
+  role="alert">
+  <%= success %>
+</div>
+<%}%> <%if(error && error.length ){%>
+<div
+  class="alert alert-danger col-6 offset-3"
+  id="alertMessage"
+  style="display: block"
+  role="alert">
+  <%= error %>
+</div>
+
+<%}%> <%if(filter && filter.length ){%>
+
+<div
+  class="alert alert-success col-6 offset-3"
+  id="alertMessage"
+  style="display: block"
+  role="alert">
+  <%= filter %>
+</div>
+
+<%}%>
+<script>
+  function showAlert(duration) {
+    const alertBox = document.getElementById("alertMessage");
+    setTimeout(() => {
+      alertBox.style.display = "none";
+    }, duration);
+
+    alertBox.style.top = "-10px"; // Start position above the navbar
+
+    // alertBox.classList.remove("hidden");
+
+    let position = -10;
+    let movingDown = true;
+    const interval = setInterval(() => {
+      if (movingDown) {
+        position += 15; // Adjust the step size as needed
+      } else {
+        position -= 4; // Adjust the step size as needed
+      }
+
+      alertBox.style.top = `${position}px`;
+
+      if (position >= 102) {
+        // End position at navbar height
+        movingDown = false;
+      } else if (position <= -30) {
+        // Back to the starting position
+        clearInterval(interval);
+      }
+    }, 55);
+  }
+
+  showAlert(3000);
+</script>

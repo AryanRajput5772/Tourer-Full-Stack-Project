@@ -1,0 +1,64 @@
+<% layout("/layouts/boilerplate") %>
+<div class="row mt-3">
+  <h2 class="col-6 offset-3">Signup on Tourer</h2>
+  <br /><br />
+  <br />
+  <div class="col-6 offset-3">
+    <div class="border-dark border rounded p-3 text-center">
+      <a href="/auth/github" class="text-decoration-none text-black fs-5">
+        <div>
+          <img
+            src="https://cdn.pixabay.com/photo/2022/01/30/13/33/github-6980894_1280.png"
+            alt="Github logo"
+            style="height: 35px; width: 35px; border-radius: 20px" />
+          &nbsp; &nbsp;Signup with GitHub
+        </div>
+      </a>
+    </div>
+    <br />
+    <div class="border-dark border rounded p-3 text-center">
+      <a href="/auth/google" class="text-decoration-none text-black fs-5">
+        <div>
+          <img
+            src="https://cdn4.iconfinder.com/data/icons/logos-brands-7/512/google_logo-google_icongoogle-512.png"
+            alt="Google logo"
+            style="height: 30px; width: 30px" />
+          &nbsp; &nbsp;Signup with google
+        </div>
+      </a>
+    </div>
+    <br />
+    <p class="offset-4 fs-5">---------or---------</p>
+    <form action="/signup" method="POST" class="needs-validation" novalidate>
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          type="text"
+          id="username"
+          class="form-control"
+          name="username"
+          required />
+        <div class="valid-feedback">Looks good!</div>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          name="email"
+          required />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          name="password"
+          required />
+      </div>
+      <button class="btn btn-dark add-btn mt-3">SignUp</button>
+    </form>
+  </div>
+</div>
