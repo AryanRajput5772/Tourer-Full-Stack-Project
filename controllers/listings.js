@@ -272,6 +272,32 @@ module.exports.updateListing = async (req, res) => {
     await listing.save();
   }
 
+  let api_url = `https://nominatim.openstreetmap.org/search?format=json&q=${listing.location}`;
+  let coordinate = [];
+  try {
+    let response = await fetch(api_url);
+    let data = await response.json();
+
+    if (data.length > 0) {
+      let lat = data[0].lat;
+      let long = data[0].lon;
+
+      coordinate[0] = lat;
+      coordinate[1] = long;
+    } else {
+      alert("City not found. Please try another name.");
+    }
+  } catch (error) {
+    console.error("Geocoding error:", error);
+    alert("Could not retrieve location. Please try again.");
+  }
+  if (coordinate.length == 0) {
+    coordinate = [22.3511148, 78.6677428];
+  }
+
+  listing.geometry.coordinates = coordinate;
+  await listing.save();
+
   req.flash("success", " Listing Updated!");
 
   res.redirect(`/listings/${id}`);
