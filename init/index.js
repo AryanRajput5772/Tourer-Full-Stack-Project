@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const initData = require("./data2.js");
 const Listing = require("../models/listing.js");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/WANDERLUST2";
+const MONGO_URL =
+  "mongodb+srv://aryanrajput4266:fnn7Ji6KJ5KBHobj@cluster-1.vtn8y.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-1&ssl=true";
 
 main()
   .then(() => {
@@ -20,7 +21,7 @@ const initDB = async () => {
   await Listing.deleteMany({});
   initData.data = initData.data.map((obj) => ({
     ...obj,
-    owner: "663c6cab015d55e1158d28bb",
+    owner: "670b997c3d54767b8b9e64b9",
   }));
   await Listing.insertMany(initData.data);
   console.log("data  was initialized");

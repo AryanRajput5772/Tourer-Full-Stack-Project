@@ -12,6 +12,10 @@ module.exports.searchRoutePost = async (req, res) => {
   let searchText = search.toLowerCase();
   const allListings = await Listing.find({});
 
+  if (search === "") {
+    req.flash("error", "Listing not Found");
+    return res.redirect("/listings");
+  }
   let Searchvalue;
   let flashmessage;
   for (let Listing of allListings) {
@@ -36,8 +40,9 @@ module.exports.searchRoutePost = async (req, res) => {
 
   if (Searchvalue == undefined) {
     req.flash("error", "Listing not Found ");
-    res.redirect("/listings");
+    return res.redirect("/listings");
   }
+
   res.redirect(`/listings/SearchRoute/${Searchvalue}`);
 };
 
@@ -269,8 +274,35 @@ module.exports.updateListing = async (req, res) => {
     let url = req.file.path;
     let filename = req.file.filename;
     listing.image = { url, filename };
-    await listing.save();
+    // await listing.save();
   }
+
+  let api_url = `https://nominatim.openstreetmap.org/search?format=json&q=${listing.location}`;
+  let coordinate = [];
+  try {
+    let response = await fetch(api_url);
+    let data = await response.json();
+
+    if (data.length > 0) {
+      let lat = data[0].lat;
+      let long = data[0].lon;
+
+      coordinate[0] = lat;
+      coordinate[1] = long;
+    } else {
+      req.flash("error", "Location is invalid");
+      res.redirect(`/listings/${id}`);
+    }
+  } catch (error) {
+    req.flash("error", "Location is invalid");
+    res.redirect(`/listings/${id}`);
+  }
+  if (coordinate.length == 0) {
+    coordinate = [22.3511148, 78.6677428];
+  }
+
+  listing.geometry.coordinates = coordinate;
+  await listing.save();
 
   req.flash("success", " Listing Updated!");
 

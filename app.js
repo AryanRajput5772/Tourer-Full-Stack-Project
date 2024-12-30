@@ -71,9 +71,9 @@ const sessionOptions = {
   },
 };
 
-// app.get("/", (req, res) => {
-//   res.send("Hi, I am root");
-// });
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -93,7 +93,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:8080/auth/callback",
+      callbackURL: "https://tourer.onrender.com/auth/callback",
     },
     async function (accessToken, refreshToken, profile, cb) {
       // console.log(profile);
@@ -136,7 +136,7 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: "http://localhost:8080/auth/github/callback",
+      callbackURL: "https://tourer.onrender.com/auth/github/callback",
     },
     async function (accessToken, refreshToken, profile, done) {
       // console.log(profile);
