@@ -1,5 +1,14 @@
 <% layout("/layouts/boilerplate") %>
-
+<style>
+  #filters {
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .row {
+    justify-content: space-around;
+  }
+</style>
 <div id="filters">
   <div class="filter">
     <a href="/listings">
@@ -89,6 +98,7 @@
       <p>Boats</p></a
     >
   </div>
+
   <div class="tax-toggle">
     <div class="form-check-reverse form-switch">
       <input
@@ -108,12 +118,14 @@
     ) {%>
     <a href="/listings/<%=listing._id%>" class="listing-link">
       <div class="listing-card col card">
-        <img
-          src="<%=listing.image.url%>"
-          class="card-img-top"
-          alt="listing_image"
-          style="height: 20rem" />
-        <div class="card-img-overlay"></div>
+        <div class="image">
+          <img
+            src="<%=listing.image.url%>"
+            class="card-img-top"
+            alt="listing_image"
+            style="height: 20rem" />
+        </div>
+
         <div class="card-body">
           <p class="card-text">
             <b> <%=listing.title%></b><br />

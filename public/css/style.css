@@ -94,8 +94,22 @@ body {
   border-radius: 1rem !important;
   width: 100% !important;
   object-fit: cover !important;
+  transition: all ease;
 }
 
+.image {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 1rem !important;
+}
+.image img {
+  transition: all ease 0.5s !important;
+  border-radius: 1rem !important;
+}
+.image:hover img {
+  transform: scale(1.1) !important;
+}
 .card-body {
   padding: 0 !important;
 }
@@ -108,16 +122,23 @@ body {
   text-decoration: none !important;
 }
 
+@media (max-width: 700px) {
+  .listing-link {
+    width: 350px !important;
+  }
+}
+
 /* Card Effects */
 
-.card-img-overlay {
+/* .card-img-overlay {
   opacity: 0;
-}
+} */
 
-.card-img-overlay:hover {
+/* .card-img-overlay:hover {
   opacity: 0.2;
   background-color: white;
-}
+  
+} */
 
 /* New Page */
 .add-btn {
@@ -168,7 +189,7 @@ img {
 /* Filter */
 #filters {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   height: 100px;
 }
